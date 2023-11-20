@@ -1,41 +1,21 @@
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 
-const Emoji = styled.span``
-const animation = keyframes`
-  from {
-    transform:rotate(0deg)
-  } to {
-    transform: rotate(360deg)
-  }
+const Title = styled.h1`
+  color: ${(props) => props.theme.textColor}
 `
-const Box = styled.div`
+const Wrapper = styled.div`
   display: flex;
+  height: 100vh;
+  width: 100vw;
   justify-content: center;
   align-items: center;
-  font-size: 1.5em;
-  background: tomato;
-  width: 100px;
-  height: 100px;
-  animation: ${animation} 1s linear infinite;
-  ${Emoji} {
-    transition-duration: 500ms;
-    &:hover {
-      font-size: 2.5em;
-    }
-    &:active {
-      opacity: 0;
-    }
-  }
+  background-color: ${(props) => props.theme.backgroundColor}
 `
-
 function App() {
   return (
-    <div>
-      <Box>
-        <Emoji>🤪</Emoji>
-      </Box>
-      <Emoji>🌈</Emoji>
-    </div>
+    <Wrapper>
+      <Title>Hello!</Title>
+    </Wrapper>
   )
 }
 
