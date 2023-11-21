@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 
 // check props, describe object shape to tsx
@@ -17,15 +18,11 @@ const Container = styled.div<ContainerProps>`
 interface CircleProps {
     bgColor: string;
     borderColor?: string;
-    text?: string;
 }
 
-function Circle({ bgColor, borderColor="yellow", text="default text" }: CircleProps) {
-    return (
-        <Container bgColor={bgColor} borderColor={borderColor ?? bgColor}>
-            {text}
-        </Container>
-    );
+function Circle({ bgColor, borderColor }: CircleProps) {
+    const [value, setValue] = useState<string>("");
+    return <Container bgColor={bgColor} borderColor={borderColor ?? bgColor} />
 }
 
 export default Circle;
