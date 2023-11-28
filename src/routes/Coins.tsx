@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
+import { isDarkAtom } from '../atoms.ts';
 
 const Container = styled.div`
     padding: 0px 20px;
@@ -62,10 +64,11 @@ interface CoinInterface {
     type: string
 }
 
-interface ICoinsProps {
-    toggleDark: () => void;
-}
-function Coins({ toggleDark }: ICoinsProps) {
+interface ICoinsProps {}
+
+function Coins() {
+    const setDarkAtom = useSetRecoilState(isDarkAtom);
+    const toggleDarkAtom = () => setDarkAtom((prev) => !prev);
     const [coins, setCoins] = useState<CoinInterface[]>([]);
     const [loading, setLoading] = useState(true);
     useEffect(() => {
@@ -80,7 +83,7 @@ function Coins({ toggleDark }: ICoinsProps) {
         <Container>
             <Header>
                 <Title>코인</Title>
-                <button onClick={toggleDark}>Toggle Dark Mode</button>
+                <button onClick={toggleDarkAtom}>Toggle Mode</button>
             </Header>
             {loading ? (
                 <Loader>Loading...</Loader>
