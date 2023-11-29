@@ -1,5 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
-import ToDoList from "./ToDoList.tsx";
+import ToDoList from "./components/ToDoList.tsx";
 
 const GlobalStyle = createGlobalStyle ``;
 
