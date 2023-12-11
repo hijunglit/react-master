@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchCoinHistory } from '../api';
+import ApexCharts from 'react-apexcharts';
 
 interface ChartProps {
     coinId: string;
