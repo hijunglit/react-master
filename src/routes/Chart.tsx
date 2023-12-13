@@ -1,7 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchCoinHistory } from '../api';
 import ApexChart from "react-apexcharts";
-import Price from './Price';
+import { useRecoilValue } from "recoil";
+import { isDarkAtom } from '../atoms';
 
 interface IHistorical {
     time_open: string;
@@ -16,71 +17,71 @@ interface IHistorical {
 
 interface ChartProps {
     coinId: string;
-    isDark: boolean;
 }
-function Chart({ coinId, isDark }: ChartProps) {
-    const { isLoading, data } = useQuery<IHistorical[]>({
-        queryKey: ["ohlcv", coinId], 
-        queryFn: () => fetchCoinHistory(coinId),
-        refetchInterval: 10000,
-    });
-    return (
-        <div>
-        {isLoading ? (
-          "Loading chart..."
-        ) : (
-          <ApexChart
-            type="line"
-            series={[
-              {
-                name: "Price",
-                // 아래 값은 number타입이 들어가야 하는데 기대되는 데이터 타입이 들어가지 않아 오류가 발생함
-                // as number 로 해결했지만 재점검.
-                data: data?.map((price) => price.close) as number[],
-              },
-            ]}
-            options={{
-              theme: {
-                mode: isDark ? "dark" : "light",
-              },
-              chart: {
-                height: 300,
-                width: 500,
-                toolbar: {
-                  show: false,
-                },
-                background: "transparent",
-              },
-              grid: { show: false },
-              stroke: {
-                curve: "smooth",
-                width: 4,
-              },
-              yaxis: {
+function Chart({ coinId }: ChartProps) {
+  const isDark = useRecoilValue(isDarkAtom);
+  const { isLoading, data } = useQuery<IHistorical[]>({
+      queryKey: ["ohlcv", coinId], 
+      queryFn: () => fetchCoinHistory(coinId),
+      refetchInterval: 10000,
+  });
+  return (
+      <div>
+      {isLoading ? (
+        "Loading chart..."
+      ) : (
+        <ApexChart
+          type="line"
+          series={[
+            {
+              name: "Price",
+              // 아래 값은 number타입이 들어가야 하는데 기대되는 데이터 타입이 들어가지 않아 오류가 발생함
+              // as number 로 해결했지만 재점검.
+              data: data?.map((price) => price.close) as number[],
+            },
+          ]}
+          options={{
+            theme: {
+              mode: isDark ? "dark" : "light",
+            },
+            chart: {
+              height: 300,
+              width: 500,
+              toolbar: {
                 show: false,
               },
-              xaxis: {
-                axisBorder: { show: false },
-                axisTicks: { show: false },
-                labels: { show: false },
-                type: "datetime",
-                categories: data?.map((price) => price.time_close),
+              background: "transparent",
+            },
+            grid: { show: false },
+            stroke: {
+              curve: "smooth",
+              width: 4,
+            },
+            yaxis: {
+              show: false,
+            },
+            xaxis: {
+              axisBorder: { show: false },
+              axisTicks: { show: false },
+              labels: { show: false },
+              type: "datetime",
+              categories: data?.map((price) => price.time_close),
+            },
+            fill: {
+              type: "gradient",
+              gradient: { gradientToColors: ["#0be881"], stops: [0, 100] },
+            },
+            colors: ["#0fbcf9"],
+            tooltip: {
+              y: {
+                  formatter: (value) => `$${value.toFixed(2)}`,
               },
-              fill: {
-                type: "gradient",
-                gradient: { gradientToColors: ["#0be881"], stops: [0, 100] },
-              },
-              colors: ["#0fbcf9"],
-              tooltip: {
-                y: {
-                    formatter: (value) => `$${value.toFixed(2)}`,
-                },
-              },
-            }}
-          />
-        )}
-      </div>
-    );
+            },
+          }}
+        />
+      )}
+    </div>
+  );
 }
 
 export default Chart;
