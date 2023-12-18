@@ -38,7 +38,7 @@ footer, header, hgroup, main, menu, nav, section {
     display: none;
 }
 body {
-  line-height: 1;
+  background: lineal-gradient(135deg, #e09, #d0e);
 }
 menu, ol, ul {
   list-style: none;
