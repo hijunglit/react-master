@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { 
     Switch, 
     Route, 
@@ -8,6 +9,7 @@ import {
     Link,
 } from 'react-router-dom';
 import styled from 'styled-components';
+import { fetchCoinInfo, fetchCoinTickers } from '../api';
 import Chart from "./Chart";
 import Price from "./Price";
 
@@ -44,7 +46,7 @@ const OverviewItem = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-
+    width: 33%;
     span:first-child {
         font-size: 10px;
         font-weight: 400;
@@ -75,6 +77,7 @@ const Tab = styled.span<{ isActive: boolean }>`
     color: ${(props) => 
         props.isActive ? props.theme.accentColor : props.theme.textColor};
     a {
+        padding: 7px 0px;
         display: block;
     }
 `;
@@ -144,30 +147,25 @@ interface InfoData {
   }
 
 function Coin() {
-    const [loading, setLoading] = useState(true);
-    const { coinId }= useParams<RouteParmas>();
+    const { coinId } = useParams<RouteParmas>();
     const { state } = useLocation<RouteState>();
-    const [info, setInfo] = useState<InfoData>();
-    const [priceinfo, setPriceInfo] = useState<PriceData>();
     const priceMatch = useRouteMatch("/:coinId/price");
     const chartMatch = useRouteMatch("/:coinId/chart");
-    useEffect(() => {
-        (async () => {
-            const infoData = await(
-                await fetch(`https://api.coinpaprika.com/v1/coins/${coinId}`)
-            ).json()
-            const infoPrice = await(
-                await fetch(`https://api.coinpaprika.com/v1/tickers/${coinId}`)
-            )
-            setInfo(infoData);
-            setPriceInfo(priceinfo);
-            setLoading(false);
-        })()       
-    }, [])
+    const { isLoading: infoLoading, data: infoData } = useQuery<InfoData>({
+        queryKey: ["info"],
+        queryFn: () => fetchCoinInfo(coinId)
+    });
+    const { isLoading: tickersLoading, data: tickersData } = useQuery<PriceData>({
+        queryKey: ["tickers"],
+        queryFn: () => fetchCoinTickers(coinId)
+    });
+    const loading = infoLoading || tickersLoading;
     return (
         <Container>
             <Header>
-                <Title>{state?.name ? state.name : loading ? "Loading..." : info?.name}</Title>
+                <Title>
+                    {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
+                    </Title>
             </Header>
             {loading ? (
                 <Loader>Loading...</Loader>
@@ -176,26 +174,26 @@ function Coin() {
                         <Overview>
                             <OverviewItem>
                                 <span>Rank:</span>
-                                <span>{info?.rank}</span>
+                                <span>{infoData?.rank}</span>
                             </OverviewItem>
                             <OverviewItem>
                                 <span>symbol</span>    
-                                <span>{info?.symbol}</span>
+                                <span>{infoData?.symbol}</span>
                             </OverviewItem>
                             <OverviewItem>
                                 <span>Open Sorce</span>
-                                <span>{info?.open_source}</span>    
+                                <span>{infoData?.open_source}</span>    
                             </OverviewItem>
                         </Overview>
-                        <Description>{info?.description}</Description>
+                        <Description>{infoData?.description}</Description>
                         <Overview>
                             <OverviewItem>
                                 <span>Total Supply:</span>
-                                <span>{priceinfo?.total_supply}</span>
+                                <span>{tickersData?.total_supply}</span>
                             </OverviewItem>
                             <OverviewItem>
                                 <span>Max Supply</span>    
-                                <span>{priceinfo?.max_supply}</span>
+                                <span>{tickersData?.max_supply}</span>
                             </OverviewItem>
                         </Overview>
                         <Tabs>
