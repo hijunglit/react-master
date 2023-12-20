@@ -10,7 +10,7 @@ import {
 } from 'react-router-dom';
 import styled from 'styled-components';
 import { fetchCoinInfo, fetchCoinTickers } from '../api';
-import Chart from "./Chart";
+import Chart from './Chart';
 import Price from "./Price";
 
 const Title = styled.h1`
@@ -209,7 +209,7 @@ function Coin() {
                                 <Price />
                             </Route>
                             <Route path={`/:coinId/chart`}>
-                                <Chart />
+                                <Chart coinId={coinId}/>
                             </Route>
                         </Switch>
                     </>
