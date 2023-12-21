@@ -31,16 +31,19 @@ function Chart({ coinId }: ChartProps) {
             ): (
                 <ApexChart 
                     type='candlestick'
-                    series={
-                        [{
-                            data: [data?.map((data) => {
-                                return {
-                                    x: data?.time_close,
-                                    y: data?.open
-                                }
-                            }) as any]
-                    }]
-                }
+                    series={[
+                        {
+                            data: data?.map((price) => {
+                                return [
+                                    Date.parse(price.time_close),
+                                    price.open,
+                                    price.high,
+                                    price.low,
+                                    price.close,
+                                ];
+                            }) as unknown as number[],
+                        }
+                    ]}
                     options={{
                         theme: {
                             mode: "dark",
