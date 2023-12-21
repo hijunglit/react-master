@@ -15,5 +15,5 @@ export const lightTheme: DefaultTheme = {
 export const darkTheme: DefaultTheme = {
     bgColor: "rgb(47, 54, 64)",
     textColor: "whitesmoke",
-    accentColor: "rgb(245, 246, 250)",
+    accentColor: "tomato",
 }

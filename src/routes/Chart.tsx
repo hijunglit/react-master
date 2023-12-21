@@ -31,22 +31,16 @@ function Chart({ coinId }: ChartProps) {
             ): (
                 <ApexChart 
                     type='candlestick'
-                    series={[
-                        {
-                            data: [{
-                                x: new Date(1538778600000),
-                                y: [51.98, 56.29, 51.59, 53.85]
-                              },
-                              {
-                                x: new Date(1538780400000),
-                                y: [53.66, 54.99, 51.35, 52.95]
-                              },
-                              {
-                                x: new Date(1538782200000),
-                                y: [52.76, 57.35, 52.15, 57.03]
-                              }]
-                        }
-                    ]}
+                    series={
+                        [{
+                            data: [data?.map((data) => {
+                                return {
+                                    x: data?.time_close,
+                                    y: data?.open
+                                }
+                            }) as any]
+                    }]
+                }
                     options={{
                         theme: {
                             mode: "dark",
@@ -58,7 +52,7 @@ function Chart({ coinId }: ChartProps) {
                             background: "transparent",
                         },
                         title: {
-                            text:'Nomad Chart',
+                            text:'Chart',
                         },
                         grid: { show: false },
                         yaxis: {
