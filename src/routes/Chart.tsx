@@ -30,50 +30,50 @@ function Chart({ coinId }: ChartProps) {
                 "Loading Chart..."
             ): (
                 <ApexChart 
-                    type='line'
+                    type='candlestick'
                     series={[
                         {
-                            name: "price",
-                            data: data?.map((price) => price.close) as number[],
-                        },
+                            data: [{
+                                x: new Date(1538778600000),
+                                y: [51.98, 56.29, 51.59, 53.85]
+                              },
+                              {
+                                x: new Date(1538780400000),
+                                y: [53.66, 54.99, 51.35, 52.95]
+                              },
+                              {
+                                x: new Date(1538782200000),
+                                y: [52.76, 57.35, 52.15, 57.03]
+                              }]
+                        }
                     ]}
                     options={{
                         theme: {
                             mode: "dark",
                         },
                         chart: {
+                            type: 'candlestick',
                             height: 300,
                             width: 500,
-                            toolbar: {
-                                show: false,
-                            },
                             background: "transparent",
                         },
-                        grid: { show: false },
-                        stroke: {
-                            curve: "smooth",
-                            width: 4,
+                        title: {
+                            text:'Nomad Chart',
                         },
+                        grid: { show: false },
                         yaxis: {
-                            show: false,
+                            tooltip: {
+                                enabled: false,
+                            }
                         },
                         xaxis: {
-                            axisBorder: { show: false },
-                            axisTicks: { show: false },
-                            labels: { show: false },
                             type: "datetime",
-                            categories: data?.map((price) => price.time_close),
                         },
                         fill: {
                             type: "gradient",
                             gradient: { gradientToColors: ["#0be881"], stops: [0, 100] },
                         },
                         colors: ["#0fbcf9"],
-                        tooltip: {
-                            y: {
-                                formatter: (value) => `$${value.toFixed(2)}`,
-                            },
-                        },
                     }}
                 />
             )}

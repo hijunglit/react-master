@@ -23,6 +23,7 @@ const Loader = styled.span`
 `;
 
 const Container = styled.div`
+    position: relative;
     padding: 0px 20px;
     max-width: 480px;
     margin: 0 auto;
@@ -81,6 +82,12 @@ const Tab = styled.span<{ isActive: boolean }>`
         padding: 7px 0px;
         display: block;
     }
+`;
+
+const GoBack = styled.span`
+    position: absolute;
+    left: 0; 
+    padding: 12px 20px;
 `;
 
 interface RouteParmas {
@@ -170,6 +177,11 @@ function Coin() {
                 </title>
             </Helmet>
             <Header>
+                <GoBack>
+                    <Link to={'/'}>
+                        <i className="fas fa-chevron-left"></i>
+                    </Link>
+                </GoBack>
                 <Title>
                     {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
                 </Title>

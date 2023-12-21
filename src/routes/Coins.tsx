@@ -5,6 +5,7 @@ import { fetchCoins } from '../api';
 import { Helmet } from 'react-helmet';
 
 const Container = styled.div`
+    position: relative;
     padding: 0px 20px;
     max-width: 480px;
     margin: 0 auto;
@@ -16,6 +17,11 @@ const Header = styled.header`
     justify-content: center;
     align-items: center;
 `;
+
+const Toggle = styled.button`
+    position: absolute;
+    left: 0;
+`
 
 const CoinList = styled.ul``;
 
@@ -74,13 +80,14 @@ function Coins() {
                 <title>코인</title>
             </Helmet>
             <Header>
+                <Toggle>Toggle</Toggle>
                 <Title>코인</Title>
             </Header>
             {isLoading ? (
                 <Loader>Loading...</Loader>
                 ) : (
                     <CoinList>
-                        {data?.slice(0,100).map((coin) => (
+                        {data?.slice(0,20).map((coin) => (
                             <Coin key={coin.id}>
                                 <Link 
                                     to={{
