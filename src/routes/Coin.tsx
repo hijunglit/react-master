@@ -12,6 +12,7 @@ import styled from 'styled-components';
 import { fetchCoinInfo, fetchCoinTickers } from '../api';
 import Chart from './Chart';
 import Price from "./Price";
+import { Helmet } from 'react-helmet';
 
 const Title = styled.h1`
     font-size: 48px;
@@ -157,15 +158,21 @@ function Coin() {
     });
     const { isLoading: tickersLoading, data: tickersData } = useQuery<PriceData>({
         queryKey: ["tickers", coinId],
-        queryFn: () => fetchCoinTickers(coinId)
+        queryFn: () => fetchCoinTickers(coinId),
+        refetchInterval: 5000,
     });
     const loading = infoLoading || tickersLoading;
     return (
         <Container>
+            <Helmet>
+                <title>
+                    {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
+                </title>
+            </Helmet>
             <Header>
                 <Title>
                     {state?.name ? state.name : loading ? "Loading..." : infoData?.name}
-                    </Title>
+                </Title>
             </Header>
             {loading ? (
                 <Loader>Loading...</Loader>
@@ -181,8 +188,8 @@ function Coin() {
                                 <span>{infoData?.symbol}</span>
                             </OverviewItem>
                             <OverviewItem>
-                                <span>Open Sorce</span>
-                                <span>{infoData?.open_source}</span>    
+                                <span>Price</span>
+                                <span>{tickersData?.quotes.USD.price.toFixed(3)}</span>    
                             </OverviewItem>
                         </Overview>
                         <Description>{infoData?.description}</Description>
