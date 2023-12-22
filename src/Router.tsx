@@ -9,7 +9,7 @@ interface IRouterProps{
 
 function Router({ toggleDark, isDark }: IRouterProps) {
     return (
-        <BrowserRouter>
+        <BrowserRouter basename="/react-master">
             <Switch>
                 <Route path={"/"}>
                     <Coins toggleDark={toggleDark} />
