@@ -70,7 +70,7 @@ interface ICoinsProps {
 }
 
 function Coins({ toggleDark }: ICoinsProps) {
-    const { isLoading, data } = useQuery<ICoin[]>({
+    const { isLoading, data} = useQuery<ICoin[]>({
         queryKey:["allCoins"], 
         queryFn: () => fetchCoins()
     });
