@@ -34,18 +34,15 @@ function Chart({ coinId, isDark }: ChartProps) {
                     type='candlestick'
                     series={[
                         {
-                            data: [{
-                                x: new Date(1538778600000),
-                                y: [51.98, 56.29, 51.59, 53.85]
-                              },
-                              {
-                                x: new Date(1538780400000),
-                                y: [53.66, 54.99, 51.35, 52.95]
-                              },
-                              {
-                                x: new Date(1538782200000),
-                                y: [52.76, 57.35, 52.15, 57.03]
-                              }]
+                            data: data?.map((price) => {
+                                return [
+                                    Date.parse(price.time_close),
+                                    price.open,
+                                    price.high,
+                                    price.low,
+                                    price.close,
+                                ];
+                            }) as unknown as number[],
                         }
                     ]}
                     options={{
@@ -59,7 +56,7 @@ function Chart({ coinId, isDark }: ChartProps) {
                             background: "transparent",
                         },
                         title: {
-                            text:'Nomad Chart',
+                            text:'Chart',
                         },
                         grid: { show: false },
                         yaxis: {
