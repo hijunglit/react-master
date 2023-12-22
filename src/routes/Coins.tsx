@@ -18,18 +18,14 @@ const Header = styled.header`
     align-items: center;
 `;
 
-const Toggle = styled.button`
-    position: absolute;
-    left: 0;
-`
-
 const CoinList = styled.ul``;
 
 const Coin = styled.li`
-    background-color: white;
-    color: ${(props) => props.theme.bgColor};
+    background-color: ${(props) => props.theme.cardBgColor};
+    color: ${(props) => props.theme.textColor};
     border-radius: 15px;
     margin-bottom: 10px;
+    border: 1px solid white;
     a {
         display: flex;
         align-items: center;
@@ -69,7 +65,11 @@ interface ICoin {
     type: string;
 }
 
-function Coins() {
+interface ICoinsProps {
+    toggleDark: () => void;
+}
+
+function Coins({ toggleDark }: ICoinsProps) {
     const { isLoading, data } = useQuery<ICoin[]>({
         queryKey:["allCoins"], 
         queryFn: () => fetchCoins()
@@ -80,8 +80,8 @@ function Coins() {
                 <title>코인</title>
             </Helmet>
             <Header>
-                <Toggle>Toggle</Toggle>
                 <Title>코인</Title>
+                <button onClick={toggleDark}>Toggle Mode</button>
             </Header>
             {isLoading ? (
                 <Loader>Loading...</Loader>
