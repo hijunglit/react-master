@@ -24,6 +24,13 @@ function Chart({ coinId, isDark }: ChartProps) {
         queryFn: () => fetchCoinHistory(coinId),
         refetchInterval: 10000,
     })
+    const exceptData = data ?? [];
+    const chartData = exceptData?.map((i:IHistorical) => {
+        return {
+            x: i.time_close,
+            y: [i.open, i.high, i.low, i.close]
+        };
+    });
     return (
         <div>
             {isLoading ? (
@@ -31,19 +38,7 @@ function Chart({ coinId, isDark }: ChartProps) {
             ): (
                 <ApexChart 
                     type='candlestick'
-                    series={[
-                        {
-                            data: data?.map((price) => {
-                                return [
-                                    Date.parse(price.time_close),
-                                    price.open,
-                                    price.high,
-                                    price.low,
-                                    price.close,
-                                ];
-                            }) as unknown as number[],
-                        }
-                    ]}
+                    series={[{data:chartData}]}
                     options={{
                         theme: {
                             mode: isDark ? "dark" : "light",

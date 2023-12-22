@@ -1,4 +1,5 @@
-const BASE_URL = `https://api.coinpaprika.com/v1`;;
+const BASE_URL = `https://api.coinpaprika.com/v1`;
+// const BASE_URL = `https://api.coingecko.com/api/v3`
 
 export function fetchCoins() {
     return fetch(`${BASE_URL}/coins`).then((response) => response.json());

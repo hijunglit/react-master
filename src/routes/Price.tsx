@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchCoinTickers } from '../api';
-import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -76,26 +75,38 @@ function Price({ coinId, isDark }:PriceProps) {
         queryFn: () => fetchCoinTickers(coinId),
         refetchInterval: 5000,
     });
-    const loading = tickersData;
 
     return (
-        <Container>
+        <div>
+        {tickersLoading ? (
+            "Loading Price..."
+        ) : (
+            <Container>
             <Overview>
                 <OverviewItem>
-                    <span>Max Supply</span>
+                    <span>최대 공급</span>
                     <span>{tickersData?.max_supply}</span>
                 </OverviewItem>
                 <OverviewItem>
-                    <span>Last Updated</span>
+                    <span>마지막 업데이트</span>
                     <span>{tickersData?.last_updated}</span>
                 </OverviewItem>
             </Overview>
             <Overview>
                 <OverviewItem>
-                    
+                    <span>price</span>
+                    <span>15분 동안 {tickersData?.quotes?.USD?.percent_change_15m}%</span>
+                </OverviewItem>
+                <OverviewItem>
+                    <span>price</span>
+                    <span>30분 동안 {tickersData?.quotes?.USD?.percent_change_30m}%</span>
                 </OverviewItem>
             </Overview>
         </Container>
+        )}
+        </div>
+
+       
     )
 }
 
